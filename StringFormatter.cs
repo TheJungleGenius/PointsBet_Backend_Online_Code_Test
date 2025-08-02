@@ -12,20 +12,23 @@ namespace PointsBet_Backend_Online_Code_Test
       - Fixing typos
       - Any other light-weight optimisation
     */
-    public class StringFormatter
+    public static class StringFormatter
     {
-
-        //Code to improve
-        public static string ToCommaSepatatedList(string[] items, string quote)
+        public static string ToCommaSeparatedList(string[] items, string quote)
         {
-            StringBuilder qry = new StringBuilder(string.Format("{0}{1}{0}", quote, items[0]));
+            if (items == null || items.Length == 0)
+                return string.Empty;
 
-            if (items.Length > 1)
+            if (quote == null)
+                throw new ArgumentNullException(nameof(quote));
+
+            var qry = new StringBuilder(items[0].Length + quote.Length * 2);
+            qry.Append(quote).Append(items[0]).Append(quote);
+
+            for (int i = 1; i < items.Length; i++)
             {
-                for (int i = 1; i < items.Length; i++)
-                {
-                    qry.Append(string.Format(", {0}{1}{0}", quote, items[i]));
-                }
+                qry.Append(", ")
+                   .Append(quote).Append(items[i]).Append(quote);
             }
 
             return qry.ToString();
